@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Node struct {
 	value int
@@ -43,14 +46,32 @@ func getInputUntilEOF() []int {
 	return arr
 }
 
+func sortArray(arr []int) []int {
+	for i := 0; i < len(arr); i++ {
+		for j := i + 1; j < len(arr); j++ {
+			if arr[i] > arr[j] {
+				arr[i], arr[j] = arr[j], arr[i]
+			}
+		}
+	}
+	return arr
+}
+
 func main() {
 	numbers := getInputUntilEOF()
+
+	sortedNumbers := sortArray(numbers)
 
 	//input := getInputUntilEOF()
 	//fmt.Println(input)
 
-	bst := convertArrayToBST(numbers)
+	bst := convertArrayToBST(sortedNumbers)
+
+	//fmt.Println("\n\n\n")
 
 	beatifyBST(bst)
+
+}
+
 
 }
