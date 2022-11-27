@@ -69,9 +69,30 @@ func main() {
 
 	//fmt.Println("\n\n\n")
 
-	beatifyBST(bst)
+	printBSTLevelByLevel(bst)
 
 }
 
+func printBSTLevelByLevel(bst *Node) {
+	if bst == nil {
+		return
+	}
+
+	values := []int{}
+
+	queue := []*Node{bst}
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+		values = append(values, node.value)
+		if node.left != nil {
+			queue = append(queue, node.left)
+		}
+		if node.right != nil {
+			queue = append(queue, node.right)
+		}
+	}
+	answer, _ := json.Marshal(values)
+	fmt.Printf("%v", string(answer))
 
 }
