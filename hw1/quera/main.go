@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 type Node struct {
@@ -93,6 +94,8 @@ func printBSTLevelByLevel(bst *Node) {
 		}
 	}
 	answer, _ := json.Marshal(values)
-	fmt.Printf("%v", string(answer))
+	finalStr := strings.ReplaceAll(string(answer), ",", ", ")
+
+	fmt.Printf("%v", finalStr)
 
 }
