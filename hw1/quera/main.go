@@ -30,16 +30,21 @@ func beatifyBST(root *Node) {
 	beatifyBST(root.right)
 }
 
-func main() {
-	numbers := []int{
-		-5,
-		-10,
-		0,
-		15,
-		20,
-		100,
-		-100,
+func getInputUntilEOF() []int {
+	var input int
+	var arr []int
+	for {
+		_, err := fmt.Scanf("%d", &input)
+		if err != nil {
+			break
+		}
+		arr = append(arr, input)
 	}
+	return arr
+}
+
+func main() {
+	numbers := getInputUntilEOF()
 
 	//input := getInputUntilEOF()
 	//fmt.Println(input)
