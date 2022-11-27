@@ -24,16 +24,6 @@ func convertArrayToBST(arr []int) *Node {
 	return root
 }
 
-func beatifyBST(root *Node) {
-	if root == nil {
-		return
-	}
-
-	beatifyBST(root.left)
-	fmt.Println(root.value)
-	beatifyBST(root.right)
-}
-
 func getInputUntilEOF() []int {
 	var input int
 	var arr []int
@@ -79,7 +69,7 @@ func printBSTLevelByLevel(bst *Node) {
 		return
 	}
 
-	values := []int{}
+	var values []int
 
 	queue := []*Node{bst}
 	for len(queue) > 0 {
