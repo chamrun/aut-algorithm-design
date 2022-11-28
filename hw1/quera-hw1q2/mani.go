@@ -14,7 +14,7 @@ func getInt8Input(variable *int8) {
 		fmt.Println(err)
 	}
 }
-func process() int {
+func getLines() []string {
 	var n int
 	var m int
 	getIntInput(&n)
@@ -26,26 +26,35 @@ func process() int {
 		var line string
 		_, err := fmt.Scanf("%s", &line)
 		if err != nil {
-			return 0
+			return []string{}
 		}
 		lines = append(lines, line)
 	}
 
-	var allLinesAreTheSame = true
+	return lines
+}
 
-	for i := 1; i < n; i++ {
-		for j := 0; j < m; j++ {
-			if lines[i][j] != lines[0][j] {
-				allLinesAreTheSame = false
-				break
+func findLeastSubstringChangesToMakeAllLinesTheSame(lines []string) int {
+	var answer int
+
+	for i := 0; i < len(lines); i++ {
+		var zeros int
+		var ones int
+
+		for j := len(lines[0]) - 1; j >= 0; j-- {
+			if lines[i][j] == '0' {
+				zeros++
+			} else {
+				ones++
 			}
 		}
+		if zeros > ones {
+			answer += ones
+		} else {
+			answer += zeros
+		}
 	}
-	if allLinesAreTheSame {
-		return 0
-	}
-
-	return 1
+	return answer
 }
 
 func main() {
@@ -53,7 +62,13 @@ func main() {
 	getInt8Input(&t)
 
 	for i := 0; i < int(t); i++ {
-		answer := process()
-		fmt.Println("\nCase #", i+1, ": ", answer)
+		lines := getLines()
+		if i == 2 {
+			answer := findLeastSubstringChangesToMakeAllLinesTheSame(lines)
+			fmt.Println("\nCase #", i+1, ": ", answer)
+		}
+
+		//answer := findLeastSubstringChangesToMakeAllLinesTheSame(lines)
+		//fmt.Println(answer)
 	}
 }
