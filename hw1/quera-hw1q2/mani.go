@@ -1,17 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func getIntInput(variable *int) {
 	_, err := fmt.Scanf("%d", variable)
 	if err != nil {
-		fmt.Println(err)
+		//pn(err)
 	}
 }
 func getInt8Input(variable *int8) {
 	_, err := fmt.Scanf("%d", variable)
 	if err != nil {
-		fmt.Println(err)
+		//pn(err)
 	}
 }
 func getLines() [][]rune {
@@ -36,14 +38,21 @@ func getLines() [][]rune {
 	return lines
 }
 
-func findLeastSubstringChangesToMakeAllLinesTheSame(lines [][]rune) int {
-	var answer int
+//func pn(s any) {
+//	//fmt.Println(s)
+//}
 
-	for i := 0; i < len(lines); i++ {
+func findLeastSubstringChangesToMakeAllLinesTheSame(lines [][]rune) int {
+	answer := 0
+
+	for j := len(lines[0]) - 1; j >= 0; j-- {
+		//pn("current answer: ")
+		//pn(answer)
+		printState(lines)
 		var zeros int
 		var ones int
 
-		for j := len(lines[0]) - 1; j >= 0; j-- {
+		for i := 0; i < len(lines); i++ {
 			if lines[i][j] == '0' {
 				zeros++
 			} else {
@@ -59,7 +68,7 @@ func findLeastSubstringChangesToMakeAllLinesTheSame(lines [][]rune) int {
 			answer += zeros
 		}
 
-		for j := len(lines[0]) - 1; j >= 0; j-- {
+		for i := 0; i < len(lines); i++ {
 			if lines[i][j] == '1' && onesAreLess {
 				for k := 0; k <= j; k++ {
 					if lines[i][k] == '0' {
@@ -79,7 +88,22 @@ func findLeastSubstringChangesToMakeAllLinesTheSame(lines [][]rune) int {
 			}
 		}
 	}
+	//pn("final answer: ")
+	//pn(answer)
+	//pn("\n\n-------------\n\n")
 	return answer
+}
+
+func printState(lines [][]rune) {
+	//pn("\nState: ")
+	for i := 0; i < len(lines); i++ {
+		for j := 0; j < len(lines[0]); j++ {
+			//fmt.Print(string(lines[i][j]))
+		}
+		//pn("")
+	}
+	//pn("")
+
 }
 
 func main() {
@@ -90,7 +114,7 @@ func main() {
 		lines := getLines()
 		//if i == 2 {
 		answer := findLeastSubstringChangesToMakeAllLinesTheSame(lines)
-		//fmt.Println("\nCase #", i+1, ": ", answer)
+		//pn("\nCase #", i+1, ": ", answer)
 		//}
 
 		//answer := findLeastSubstringChangesToMakeAllLinesTheSame(lines)
