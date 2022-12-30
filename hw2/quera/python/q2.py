@@ -31,70 +31,16 @@ def meets_conditions(conditions, a, b, c, d):
 
 
 def solve(n, abcd, ons, offs):
+    # conditions = find_confitions(n, offs, ons)
+    # possible_acts = fin_possible_acts(abcd, conditions)
+    # del conditions
+    # possible_states = find_possible_states(n, offs, ons, possible_acts)
+    # del possible_acts
 
-    conditions = find_confitions(n, offs, ons)
-    possible_acts = fin_possible_acts(abcd, conditions)
-    del conditions
-    possible_states = find_possible_states(n, offs, ons, possible_acts)
-    del possible_acts
+    # return possible_states
+    pass
 
-    return possible_states
-
-
-def find_possible_states(n, offs, ons, possible_acts):
-    possible_states = set()
-    for act in possible_acts:
-        state = ''
-
-        for i in range(n):
-            if i in ons:
-                state += '1'
-            elif i in offs:
-                state += '0'
-            else:
-                clicks_by_a = True
-                clicks_by_b = i % 2 == 0
-                clicks_by_c = not clicks_by_b
-                clicks_by_d = i % 3 == 0
-
-                i_is_on = True
-
-                if clicks_by_a and act['a'] % 2 == 1:
-                    i_is_on = not i_is_on
-                if clicks_by_b and act['b'] % 2 == 1:
-                    i_is_on = not i_is_on
-                if clicks_by_c and act['c'] % 2 == 1:
-                    i_is_on = not i_is_on
-                if clicks_by_d and act['d'] % 2 == 1:
-                    i_is_on = not i_is_on
-
-                if i_is_on:
-                    state += '1'
-                else:
-                    state += '0'
-
-        possible_states.add(state)
-    return possible_states
-
-
-def fin_possible_acts(abcd, conditions):
-    possible_acts = []
-    for a in range(abcd + 1):
-        for b in range(abcd - a + 1):
-            for c in range(abcd - a - b + 1):
-                d = abcd - a - b - c
-
-                if meets_conditions(conditions, a, b, c, d):
-                    possible_acts.append({
-                        'a': a,
-                        'b': b,
-                        'c': c,
-                        'd': d,
-                    })
-    return possible_acts
-
-
-def find_confitions(n, offs, ons):
+    # def find_confitions(n, offs, ons):
     conditions = {
         'odd': list(),
         'even': list(),
@@ -124,7 +70,93 @@ def find_confitions(n, offs, ons):
             conditions['odd'].append(clicks_by)
         else:
             conditions['even'].append(clicks_by)
-    return conditions
+
+    # def fin_possible_acts(abcd, conditions):
+    possible_states = set()
+    for a in range(abcd + 1):
+        for b in range(abcd - a + 1):
+            for c in range(abcd - a - b + 1):
+                d = abcd - a - b - c
+
+                if meets_conditions(conditions, a, b, c, d):
+                    # possible_acts.append({
+                    #     'a': a,
+                    #     'b': b,
+                    #     'c': c,
+                    #     'd': d,
+                    # })
+
+                    act = {
+                        'a': a,
+                        'b': b,
+                        'c': c,
+                        'd': d,
+                    }
+
+                    state = ''
+
+                    for i in range(n):
+                        if i in ons:
+                            state += '1'
+                        elif i in offs:
+                            state += '0'
+                        else:
+                            clicks_by_a = True
+                            clicks_by_b = i % 2 == 0
+                            clicks_by_c = not clicks_by_b
+                            clicks_by_d = i % 3 == 0
+
+                            i_is_on = True
+
+                            if clicks_by_a and act['a'] % 2 == 1:
+                                i_is_on = not i_is_on
+                            if clicks_by_b and act['b'] % 2 == 1:
+                                i_is_on = not i_is_on
+                            if clicks_by_c and act['c'] % 2 == 1:
+                                i_is_on = not i_is_on
+                            if clicks_by_d and act['d'] % 2 == 1:
+                                i_is_on = not i_is_on
+
+                            if i_is_on:
+                                state += '1'
+                            else:
+                                state += '0'
+
+                    possible_states.add(state)
+
+    # def find_possible_states(n, offs, ons, possible_acts):
+    #     for act in possible_acts:
+    #         state = ''
+    #
+    #         for i in range(n):
+    #             if i in ons:
+    #                 state += '1'
+    #             elif i in offs:
+    #                 state += '0'
+    #             else:
+    #                 clicks_by_a = True
+    #                 clicks_by_b = i % 2 == 0
+    #                 clicks_by_c = not clicks_by_b
+    #                 clicks_by_d = i % 3 == 0
+    #
+    #                 i_is_on = True
+    #
+    #                 if clicks_by_a and act['a'] % 2 == 1:
+    #                     i_is_on = not i_is_on
+    #                 if clicks_by_b and act['b'] % 2 == 1:
+    #                     i_is_on = not i_is_on
+    #                 if clicks_by_c and act['c'] % 2 == 1:
+    #                     i_is_on = not i_is_on
+    #                 if clicks_by_d and act['d'] % 2 == 1:
+    #                     i_is_on = not i_is_on
+    #
+    #                 if i_is_on:
+    #                     state += '1'
+    #                 else:
+    #                     state += '0'
+    #
+    #         possible_states.add(state)
+    return possible_states
 
 
 def print_answer(ans):
