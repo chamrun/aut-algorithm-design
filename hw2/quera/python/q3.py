@@ -2,13 +2,13 @@ def meets_conditions(conditions, a, b, c, d):
     for condition in conditions['odd']:
         sum_of_acts = a
 
-        for act in condition:
-            if act == 'b':
-                sum_of_acts += b
-            elif act == 'c':
-                sum_of_acts += c
-            elif act == 'd':
-                sum_of_acts += d
+        if 'b' in condition:
+            sum_of_acts += b
+        elif 'c' in condition:
+            sum_of_acts += c
+
+        if 'd' in condition:
+            sum_of_acts += d
 
         if sum_of_acts % 2 == 0:
             return False
@@ -16,13 +16,13 @@ def meets_conditions(conditions, a, b, c, d):
     for condition in conditions['even']:
         sum_of_acts = a
 
-        for act in condition:
-            if act == 'b':
-                sum_of_acts += b
-            elif act == 'c':
-                sum_of_acts += c
-            elif act == 'd':
-                sum_of_acts += d
+        if 'b' in condition:
+            sum_of_acts += b
+        elif 'c' in condition:
+            sum_of_acts += c
+
+        if 'd' in condition:
+            sum_of_acts += d
 
         if sum_of_acts % 2 == 1:
             return False
@@ -69,13 +69,6 @@ def solve(n, abcd, ons, offs):
 
                 if meets_conditions(conditions, a, b, c, d):
 
-                    act = {
-                        'a': a,
-                        'b': b,
-                        'c': c,
-                        'd': d,
-                    }
-
                     state = ''
 
                     for i in range(n):
@@ -84,21 +77,20 @@ def solve(n, abcd, ons, offs):
                         elif i in offs:
                             state += '0'
                         else:
-                            clicks_by_a = True
                             clicks_by_b = i % 2 == 0
                             clicks_by_c = not clicks_by_b
                             clicks_by_d = i % 3 == 0
 
-                            i_is_on = True
+                            total_clicks = a
 
-                            if clicks_by_a and act['a'] % 2 == 1:
-                                i_is_on = not i_is_on
-                            if clicks_by_b and act['b'] % 2 == 1:
-                                i_is_on = not i_is_on
-                            if clicks_by_c and act['c'] % 2 == 1:
-                                i_is_on = not i_is_on
-                            if clicks_by_d and act['d'] % 2 == 1:
-                                i_is_on = not i_is_on
+                            if clicks_by_b:
+                                total_clicks += b
+                            elif clicks_by_c:
+                                total_clicks += c
+                            if clicks_by_d:
+                                total_clicks += d
+
+                            i_is_on = total_clicks % 2 == 0
 
                             if i_is_on:
                                 state += '1'
