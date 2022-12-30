@@ -19,20 +19,20 @@ def find_cross_upsidedowns(left_nums, nums, right_nums):
     i = 0
     j = 0
     for k in range(len(nums)):
-        if j >= len(right_nums):
-            nums[k] = left_nums[i]
-            i += 1
-        elif i >= len(left_nums):
+        if i >= len(left_nums):
             nums[k] = right_nums[j]
             j += 1
+        elif j >= len(right_nums):
+            nums[k] = left_nums[i]
+            i += 1
         elif left_nums[i] > right_nums[j]:
             nums[k] = right_nums[j]
             j += 1
+            cross_upsidedowns += len(left_nums) - i
         else:
             nums[k] = left_nums[i]
             i += 1
 
-        cross_upsidedowns += len(left_nums) - i
     return cross_upsidedowns
 
 
