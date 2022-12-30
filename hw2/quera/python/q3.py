@@ -28,12 +28,19 @@ def solve(n, abcd, ons, offs):
                 return []
             should_be_odd['cd'] = i_changed
 
-    possible_states = set()
-
     ab_should_be_odd = should_be_odd.get('b')
     ac_should_be_odd = should_be_odd.get('c')
     abd_should_be_odd = should_be_odd.get('bd')
     acd_should_be_odd = should_be_odd.get('cd')
+
+    possible_states = set()
+
+    # new_state = {}
+    #
+    # if 'b' in should_be_odd:
+    #     b_should_be_odd = should_be_odd['b']
+    #     if b_should_be_odd:
+    #         for i in range
 
     for a in range(abcd + 1):
 
