@@ -90,19 +90,6 @@ def solve(n, abcd, ons, offs):
             for d in range(d_start, abcd - a - b + 1, d_steps):
                 c = abcd - a - b - d
 
-            # for c in range(c_start, abcd - a - b + 1, c_steps):
-            #     d = abcd - a - b - c
-
-                if abd_should_be_odd is not None:
-                    abd_is_odd = (a + b + d) % 2 == 1
-                    if abd_is_odd != abd_should_be_odd:
-                        continue
-
-                if acd_should_be_odd is not None:
-                    acd_is_odd = (a + b + c) % 2 == 1
-                    if acd_is_odd != acd_should_be_odd:
-                        continue
-
                 state = ''
 
                 for i in range(n):
