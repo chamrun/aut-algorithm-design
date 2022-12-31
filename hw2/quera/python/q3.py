@@ -1,5 +1,9 @@
 def solve(n, abcd, ons, offs):
-    should_be_odd = {}
+
+    b_should_be_odd = None
+    c_should_be_odd = None
+    bd_should_be_odd = None
+    cd_should_be_odd = None
 
     for i in range(n):
         if i in ons:
@@ -12,119 +16,176 @@ def solve(n, abcd, ons, offs):
         by_six = i % 6
 
         if by_six == 0:
-            if 'bd' in should_be_odd and should_be_odd['bd'] != i_changed:
+            if bd_should_be_odd is not None and bd_should_be_odd != i_changed:
                 return []
-            should_be_odd['bd'] = i_changed
+            bd_should_be_odd = i_changed
         elif by_six == 1 or by_six == 5:
-            if 'c' in should_be_odd and should_be_odd['c'] != i_changed:
+            if c_should_be_odd is not None and c_should_be_odd != i_changed:
                 return []
-            should_be_odd['c'] = i_changed
+            c_should_be_odd = i_changed
         elif by_six == 2 or by_six == 4:
-            if 'b' in should_be_odd and should_be_odd['b'] != i_changed:
+            if b_should_be_odd is not None and b_should_be_odd != i_changed:
                 return []
-            should_be_odd['b'] = i_changed
+            b_should_be_odd = i_changed
         else:
-            if 'cd' in should_be_odd and should_be_odd['cd'] != i_changed:
+            if cd_should_be_odd is not None and cd_should_be_odd != i_changed:
                 return []
-            should_be_odd['cd'] = i_changed
+            cd_should_be_odd = i_changed
 
-    ab_should_be_odd = should_be_odd.get('b')
-    ac_should_be_odd = should_be_odd.get('c')
-    abd_should_be_odd = should_be_odd.get('bd')
-    acd_should_be_odd = should_be_odd.get('cd')
+    template = [None] * n
+
+    if bd_should_be_odd is not None:
+        char = '0' if bd_should_be_odd else '1'
+        for i in range(0, n, 6):
+            template[i] = char
+
+    if c_should_be_odd is not None:
+        char = '0' if c_should_be_odd else '1'
+        for i in range(1, n, 6):
+            template[i] = char
+        for i in range(5, n, 6):
+            template[i] = char
+
+    if b_should_be_odd is not None:
+        char = '0' if b_should_be_odd else '1'
+        for i in range(2, n, 6):
+            template[i] = char
+        for i in range(4, n, 6):
+            template[i] = char
+
+    if cd_should_be_odd is not None:
+        char = '0' if cd_should_be_odd else '1'
+        for i in range(3, n, 6):
+            template[i] = char
 
     possible_states = set()
 
-    # new_state = {}
-    #
-    # if 'b' in should_be_odd:
-    #     b_should_be_odd = should_be_odd['b']
-    #     if b_should_be_odd:
-    #         for i in range
-
     for a in range(abcd + 1):
 
-        if ab_should_be_odd is not None:
-            b_steps = 2
-            if a % 2 == 0:
-                if ab_should_be_odd:
-                    b_start = 1
-                else:
-                    b_start = 0
-            else:
-                if ab_should_be_odd:
-                    b_start = 0
-                else:
-                    b_start = 1
-        else:
+        if b_should_be_odd is None:
             b_start = 0
             b_steps = 1
-
-        if ac_should_be_odd is not None:
-            c_steps = 2
-            if a % 2 == 0:
-                if ac_should_be_odd:
-                    c_start = 1
-                else:
-                    c_start = 0
+        else:
+            b_steps = 2
+            if b_should_be_odd:
+                b_start = 1
             else:
-                if ac_should_be_odd:
-                    c_start = 0
-                else:
-                    c_start = 1
+                b_start = 0
+
+        if c_should_be_odd is not None:
+            c_steps = 2
+            if c_should_be_odd:
+                c_start = 1
+            else:
+                c_start = 0
         else:
             c_start = 0
             c_steps = 1
 
         for b in range(b_start, abcd - a + 1, b_steps):
 
-            if abd_should_be_odd is not None:
-                d_steps = 2
-                if (a + b) % 2 == 0:
-                    if abd_should_be_odd:
-                        d_start = 1
+            template_b = template.copy()
+
+            if b_should_be_odd is None:
+                char = '0' if (a + b) % 2 == 1 else '1'
+                for i in range(2, n, 6):
+                    template_b[i] = char
+                for i in range(4, n, 6):
+                    template_b[i] = char
+
+            for c in range(c_start, abcd - a - b + 1, c_steps):
+                d = abcd - a - b - c
+
+                if d < 0:
+                    continue
+
+                new_state = template_b.copy()
+
+                bd_is_odd = (a + b + d) % 2 == 0
+                    
+                if bd_should_be_odd is not None:
+                    if bd_should_be_odd:
+
+                        if bd_is_odd:
+                            continue
                     else:
-                        d_start = 0
+                        if not bd_is_odd:
+                            continue
                 else:
-                    if abd_should_be_odd:
-                        d_start = 0
+                    char = '0' if bd_is_odd else '1'
+                    for i in range(0, n, 6):
+                        new_state[i] = char
+
+                cd_is_odd = (a + c + d) % 2 == 1
+                            
+                if cd_should_be_odd is not None:
+                    if cd_should_be_odd:
+                        if not cd_is_odd:
+                            continue
                     else:
-                        d_start = 1
-            else:
-                d_start = 0
-                d_steps = 1
+                        if cd_is_odd:
+                            continue
+                else:
+                    char = '0' if (a + c + d) % 2 == 1 else '1'
+                    for i in range(3, n, 6):
+                        new_state[i] = char
 
-            for d in range(d_start, abcd - a - b + 1, d_steps):
-                c = abcd - a - b - d
+                if c_should_be_odd is None:
+                    char = '0' if (a + c) % 2 == 1 else '1'
+                    for i in range(1, n, 6):
+                        new_state[i] = char
+                    for i in range(5, n, 6):
+                        new_state[i] = char
 
-                state = ''
+                possible_states.add(''.join(new_state))
 
-                for i in range(n):
-                    if i in ons:
-                        state += '1'
-                    elif i in offs:
-                        state += '0'
-                    else:
-                        clicks_by_b = i % 2 == 0
-                        clicks_by_d = i % 3 == 0
-
-                        total_clicks = a
-
-                        if clicks_by_b:
-                            total_clicks += b
-                        else:
-                            total_clicks += c
-
-                        if clicks_by_d:
-                            total_clicks += d
-
-                        i_is_on = total_clicks % 2 == 0
-
-                        if i_is_on:
-                            state += '1'
-                        else:
-                            state += '0'
-                possible_states.add(state)
+            # if bd_should_be_odd is not None:
+            #     d_steps = 2
+            #     if (a + b) % 2 == 0:
+            #         if bd_should_be_odd:
+            #             d_start = 1
+            #         else:
+            #             d_start = 0
+            #     else:
+            #         if bd_should_be_odd:
+            #             d_start = 0
+            #         else:
+            #             d_start = 1
+            # else:
+            #     d_start = 0
+            #     d_steps = 1
+            #
+            # for d in range(d_start, abcd - a - b + 1, d_steps):
+            #     c = abcd - a - b - d
+            #
+            #     state = ''
+            #
+            #     for i in range(n):
+            #         if i in ons:
+            #             state += '1'
+            #         elif i in offs:
+            #             state += '0'
+            #         else:
+            #             clicks_by_b = i % 2 == 0
+            #             clicks_by_d = i % 3 == 0
+            #
+            #             total_clicks = a
+            #
+            #             if clicks_by_b:
+            #                 total_clicks += b
+            #             else:
+            #                 total_clicks += c
+            #
+            #             if clicks_by_d:
+            #                 total_clicks += d
+            #
+            #             i_is_on = total_clicks % 2 == 0
+            #
+            #             if i_is_on:
+            #                 state += '1'
+            #             else:
+            #                 state += '0'
+            #     possible_states.add(state)
 
     possible_states = list(possible_states)
     possible_states.sort()
