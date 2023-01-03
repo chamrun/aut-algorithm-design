@@ -44,19 +44,6 @@ class MaxHeap:
             self.swap(index, largest)
             self.heapify_down(largest)
 
-    def kth_smallest(self, k):
-        for i in range(k - 1):
-            self.extract_min()
-        return self.extract_min()
-
-    def extract_min(self):
-        if len(self.heap) == 0:
-            return None
-        self.swap(0, len(self.heap) - 1)
-        min_value = self.heap.pop()
-        self.heapify_down(0)
-        return min_value
-
 
 def main():
     numbers = [10, 30, 20, 0, 40, 100, 80, 90, 70, 50, 60]
