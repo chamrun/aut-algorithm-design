@@ -16,6 +16,18 @@ def counting_sort(numbers, max_number):
     return result
 
 
+def stable_counting_sort(numbers, max_number):
+    counts = [0] * (max_number + 1)
+    for number in numbers:
+        counts[number] += 1
+    for i in range(1, len(counts)):
+        counts[i] += counts[i - 1]
+    result = [0] * len(numbers)
+    for number in numbers:
+        result[counts[number] - 1] = number
+        counts[number] -= 1
+    return result
+
 
 if __name__ == '__main__':
     main()
