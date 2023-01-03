@@ -1,62 +1,70 @@
-def main():
-    numbers = [2, 4, 1, 3, 5, 6, 7, 3, 1, 2, 4]
+class MaxHeap:
+    def __init__(self, numbers):
+        self.heap = []
+        for i in range(len(numbers)):
+            self.insert(numbers[i])
 
-    k = 3
-    tree = make_tree(numbers)
-    print(find_kth_largest(tree, k))
+    def insert(self, data):
+        self.heap.append(data)
+        self.heapify_up(len(self.heap) - 1)
 
+    def heapify_up(self, index):
+        if index == 0:
+            return
+        parent = (index - 1) // 2
+        if self.heap[parent] < self.heap[index]:
+            self.swap(parent, index)
+            self.heapify_up(parent)
 
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.right = None
-        self.left = None
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
 
+    def kth_largest(self, k):
+        for i in range(k - 1):
+            self.extract_max()
+        return self.extract_max()
 
-def make_tree(numbers):
-    root = Node(numbers[0])
-    for i in range(1, len(numbers)):
-        current = root
-        while True:
-            if numbers[i] > current.data:
-                if current.right is None:
-                    current.right = Node(numbers[i])
-                    break
-                else:
-                    current = current.right
-            else:
-                if current.left is None:
-                    current.left = Node(numbers[i])
-                    break
-                else:
-                    current = current.left
-    return root
-
-
-def find_kth_largest(root, k):
-    if root is None:
-        return None
-    if k < 1:
-        return None
-    if root.right is None and root.left is None:
-        if k == 1:
-            return root.data
-        else:
+    def extract_max(self):
+        if len(self.heap) == 0:
             return None
-    if root.right is None:
-        if k == 1:
-            return root.data
-        else:
-            return find_kth_largest(root.left, k - 1)
-    if root.left is None:
-        if k == 1:
-            return root.data
-        else:
-            return find_kth_largest(root.right, k - 1)
-    if k == 1:
-        return root.data
-    else:
-        return find_kth_largest(root.right, k - 1)
+        self.swap(0, len(self.heap) - 1)
+        max_value = self.heap.pop()
+        self.heapify_down(0)
+        return max_value
+
+    def heapify_down(self, index):
+        left = 2 * index + 1
+        right = 2 * index + 2
+        largest = index
+        if left < len(self.heap) and self.heap[left] > self.heap[largest]:
+            largest = left
+        if right < len(self.heap) and self.heap[right] > self.heap[largest]:
+            largest = right
+        if largest != index:
+            self.swap(index, largest)
+            self.heapify_down(largest)
+
+    def kth_smallest(self, k):
+        for i in range(k - 1):
+            self.extract_min()
+        return self.extract_min()
+
+    def extract_min(self):
+        if len(self.heap) == 0:
+            return None
+        self.swap(0, len(self.heap) - 1)
+        min_value = self.heap.pop()
+        self.heapify_down(0)
+        return min_value
+
+
+def main():
+    numbers = [10, 30, 20, 0, 40, 100, 80, 90, 70, 50, 60]
+
+    k = 7
+    max_heap = MaxHeap(numbers)
+    print(max_heap.kth_largest(k))
+    # print(max_heap.kth_smallest(k))
 
 
 if __name__ == '__main__':
