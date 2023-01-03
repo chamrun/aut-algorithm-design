@@ -3,6 +3,7 @@ def main():
     max_number = 10
     print(counting_sort(numbers, max_number))
     print(stable_counting_sort(numbers, max_number))
+    print(from_beginning_to_end_stable_counting_sort(numbers, max_number))
 
 
 def counting_sort(numbers, max_number):
@@ -26,6 +27,17 @@ def stable_counting_sort(numbers, max_number):
     for number in numbers:
         result[counts[number] - 1] = number
         counts[number] -= 1
+    return result
+
+
+def from_beginning_to_end_stable_counting_sort(numbers, max_number):
+    counts = [[] for _ in range(max_number + 1)]
+    for number in numbers:
+        counts[number].append(number)
+    result = []
+    for i in range(len(counts)):
+        for number in counts[i]:
+            result.append(number)
     return result
 
 
