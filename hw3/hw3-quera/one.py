@@ -1,18 +1,36 @@
-def remove_palindrome_sub(s: str) -> int:
-    actions = 0
-    i = 0
-    while i < len(s):
-        if s[i] == s[i + 1]:
-            actions += 1
-            i += 2
-        else:
-            i += 1
-    return actions + 1
+import numpy as np
+
+
+def find_least_palindrome_deletion(word: str) -> int:
+    dp_size = len(word) + 1
+    dp = np.zeros((dp_size, dp_size), dtype=int)
+
+    for column in range(len(word)):
+        row = column
+        dp[row][column] = 1
+
+    for curr_column in range(1, len(word)):
+        row = 0
+
+        for column in range(curr_column, len(word)):
+            dp[row][column] = dp[row + 1][column] + 1
+
+            if word[row] == word[row + 1]:
+                dp[row][column] = min(dp[row + 2][column] + 1, dp[row][column])
+
+            for occurrence in range(row + 2, column + 1):
+                if word[row] == word[occurrence]:
+                    dp[row][column] = min(dp[row + 1][occurrence - 1] + dp[occurrence + 1][column], dp[row][column])
+
+            row += 1
+
+    return dp[0][-2]
 
 
 def main():
-    test_cases = ['addbbggbb']
-    print([remove_palindrome_sub(tc) for tc in test_cases])
+    inp = input()
+    least_deletions = find_least_palindrome_deletion(inp)
+    print(least_deletions)
 
 
 if __name__ == '__main__':
