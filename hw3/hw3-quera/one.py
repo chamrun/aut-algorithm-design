@@ -1,9 +1,6 @@
-import numpy as np
-
-
 def find_least_palindrome_deletion(word: str) -> int:
     dp_size = len(word) + 1
-    dp = np.zeros((dp_size, dp_size), dtype=int)
+    dp = [[0 for _ in range(dp_size)] for _ in range(dp_size)]
 
     for column in range(len(word)):
         row = column
